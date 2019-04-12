@@ -31,7 +31,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    # 'users.apps.UsersConfig',
+    'sortedm2m_filter_horizontal_widget',
     'smart.apps.SmartConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -120,5 +120,3 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
-
-# AUTH_USER_MODEL = 'smart.CustomUser'
