@@ -1,0 +1,20 @@
+{% extends "smart/base.html" %}
+
+{% block content %}
+    {% for location,val in localizations.items %}
+                {% for channel in val %}
+        <article class="media content-section">
+              <div class="media-body">
+                <div class="article-metadata">
+                  <a class="mr-2" href="#">{{ channel.device }}</a>
+                  <small class="text-muted">{{ channel.type }}</small>
+                </div>
+                    <h2><a class="article-title"  href="#">{{ channel.name }}</a></h2>
+                    <p class="article-content">{{ location.name }}</p>
+                    <button type="button" class="btn btn-block btn-outline-dark">Dark</button>
+              </div>
+        </article>
+{#        {{ channel }}<br>#}
+                {% endfor %}
+    {% endfor %}
+{% endblock content %}
