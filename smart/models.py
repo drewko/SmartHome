@@ -1,8 +1,7 @@
-from django.db import models
-from django.contrib.auth.models import User, AbstractUser
+from django.contrib.auth.models import AbstractUser
 from django.db import models
 from enum import Enum
-
+from django.conf import settings
 
 class Localization(models.Model):
     name = models.CharField(max_length=256)
@@ -36,11 +35,15 @@ class Group(models.Model):
     permissions = models.ManyToManyField(Channel, related_name="permissions", blank=True)
 
     def __str__(self):
-        return f'{self.name} Group'
+        return f'{self.name}'
 
-class Profile(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+
+class CustomUser(AbstractUser):
+    group = models.ForeignKey(Group, related_name='Group_zero', blank=True, null=True, on_delete=models.CASCADE)
 
     def __str__(self):
-        return f'{self.user.username} Profile'
+        return self.username
+
+    class Meta:
+        ordering = ['username', 'email', ]
+
