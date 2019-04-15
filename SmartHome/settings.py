@@ -33,7 +33,6 @@ ALLOWED_HOSTS = []
 INSTALLED_APPS = [
     'crispy_forms',
     'smart.apps.SmartConfig',
-
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -125,7 +124,9 @@ STATIC_URL = '/static/'
 # MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 # MEDIA_URL = '/media/'
 
-CRISPY_TEMPLATE_PACK = 'bootstrap4'
+# CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
-LOGIN_REDIRECT_URL = 'smart-home'
-LOGIN_URL = '/login/'
+# LOGIN_REDIRECT_URL = 'smart-home'
+# LOGIN_URL = '/login/'
+
+AUTH_USER_MODEL = 'smart.CustomUser'
