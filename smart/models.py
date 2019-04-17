@@ -9,8 +9,9 @@ class Localization(models.Model):
         return self.name
 
 class Device(models.Model):
-    name = models.CharField(max_length=256)
+    name = models.CharField(max_length=256, unique=True)
     localization = models.ForeignKey(Localization, on_delete=models.DO_NOTHING)
+    status = models.CharField(max_length=10)
 
     def __str__(self):
         return f'{self.name}'
@@ -22,8 +23,9 @@ class ChannelType(Enum):
 
 class Channel(models.Model):
     device = models.ForeignKey(Device , on_delete=models.CASCADE)
-    name = models.CharField(max_length=256)
+    name = models.CharField(max_length=256, unique=True)
     type = models.CharField(max_length=20, choices=[(tag.name, tag.value) for tag in ChannelType])
+    status =models.CharField(max_length=100)
 
     def __str__(self):
         return f'{self.device} -> {self.name} {self.type}'

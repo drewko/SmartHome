@@ -12,6 +12,13 @@
                     <h2><a class="article-title"  href="#">{{ channel.name }}</a></h2>
                     <p class="article-content">{{ location.name }}</p>
                     <button type="button" class="btn btn-block btn-outline-dark">Dark</button>
+                  {% if channel.type == 'InputOutput' %}
+                    <div class="custom-control custom-switch">
+                      <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
+                      <label class="custom-control-label" for="customSwitch1"></label>
+                    </div>
+                  {% endif %}
+
               </div>
         </article>
         {{ channel }}<br>
