@@ -29,13 +29,15 @@
                 <div class="navbar-nav mr-auto">
                   <a class="nav-item nav-link" href="{%  url 'smart-home' %}">Home</a>
                     <a class="nav-item nav-link" href="#">Devices</a>
-                    <a class="nav-item nav-link" href="#">Locations</a>
+                    <a class="nav-item nav-link" href="{%  url 'smart-locations' %}">Locations</a>
                 </div>
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
-                          <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
+                            <a class="nav-item nav-link" href="#">Profile</a>
+                            <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a>
                         {% else %}
                           <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                        <a class="nav-item nav-link" href="{% url 'register' %}">Register</a>
                     {% endif %}
                 </div>
               </div>

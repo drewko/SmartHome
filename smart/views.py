@@ -5,15 +5,13 @@ from django.contrib.auth.decorators import login_required
 # Create your views here.
 
 
-
 def profile(request):
     return render(request, 'smart/login.html')
 
 
 @login_required
 def home(request):
-    localizations={}
-
+    localizations = {}
 
     for channel in request.user.group.permissions.all():
         if channel.device.localization in localizations:
@@ -24,8 +22,29 @@ def home(request):
 
     context={
         # 'channels':request.user.profile_set.first().group.permissions.all(),
-        'localizations':localizations
+        'localizations': localizations
     }
     return render(request, 'smart/home.html', context)
+
+
+@login_required
+def locations(request):
+    localizations = {}
+
+    for channel in request.user.group.permissions.all():
+        if channel.device.localization in localizations:
+            loc = localizations[channel.device.localization]
+            if not channel.device.name in loc:
+                loc.append(channel.device.name)
+            localizations[channel.device.localization] = loc
+        else:
+            loc = [channel.device.name]
+            localizations[channel.device.localization] = loc
+
+    context = {
+        # 'channels':request.user.profile_set.first().group.permissions.all(),
+        'localizations': localizations
+    }
+    return render(request, 'smart/locations.html', context)
 
 
