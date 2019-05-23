@@ -1,0 +1,35 @@
+{% extends "smart/base.html" %}
+
+{% block content %}
+
+
+
+
+        <div class="container">
+      <h2>Locations</h2>
+      <p><strong>Note:</strong>Click on the locations panel to see the devices.</p>
+      <div class="panel-group" id="accordion">
+{#                {{ localizations }}#}
+      {% for location, devices in locations.items %}
+{#          {{ location }}#}
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+              <a data-toggle="collapse" data-parent="#accordion" href="#{{ location }}">{{ location }}</a>
+            </h4>
+          </div>
+          <div id="{{ location }}" class="panel-collapse collapse in">
+                <ul class="list-group">
+                  {% for device in devices %}
+                    <li class="list-group-item">{{ device }}</li>
+                {% endfor %}
+              </ul>
+        </div>
+    {% endfor %}
+            </div>
+    </div>
+</div>
+
+
+
+{% endblock content %}

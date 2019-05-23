@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'crispy_forms',
+    'users.apps.UsersConfig',
     'smart.apps.SmartConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -129,4 +130,4 @@ STATIC_URL = '/static/'
 LOGIN_REDIRECT_URL = 'smart-home'
 LOGIN_URL = '/login/'
 
-AUTH_USER_MODEL = 'smart.CustomUser'
+AUTH_USER_MODEL = 'users.CustomUser'
