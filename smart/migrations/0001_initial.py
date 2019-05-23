@@ -26,7 +26,7 @@ class Migration(migrations.Migration):
             ],
         ),
         migrations.CreateModel(
-            name='Localization',
+            name='Location',
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=256)),
@@ -46,7 +46,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('name', models.CharField(max_length=256, unique=True)),
                 ('status', models.CharField(max_length=10)),
-                ('localization', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='smart.Localization')),
+                ('localization', models.ForeignKey(on_delete=django.db.models.deletion.DO_NOTHING, to='smart.Location')),
             ],
         ),
         migrations.AddField(

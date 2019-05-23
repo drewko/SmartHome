@@ -14,4 +14,4 @@ def register(request):
             return redirect('smart-home')
     else:
         form = UserRegisterForm()
-    return render(request, 'smart/register.html', {'form': form})
+    return render(request, 'smart/templates/users/register.html', {'form': form})

@@ -4,7 +4,7 @@ from django.contrib.auth.models import AbstractUser
 from django.db import models
 
 
-class Localization(models.Model):
+class Location(models.Model):
     name = models.CharField(max_length=256)
 
     def __str__(self):
@@ -13,7 +13,7 @@ class Localization(models.Model):
 
 class Device(models.Model):
     name = models.CharField(max_length=256, unique=True)
-    localization = models.ForeignKey(Localization, on_delete=models.DO_NOTHING)
+    location = models.ForeignKey(Location, on_delete=models.DO_NOTHING)
     status = models.CharField(max_length=10)
 
     def __str__(self):

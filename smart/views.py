@@ -6,45 +6,70 @@ from django.contrib.auth.decorators import login_required
 
 
 def profile(request):
-    return render(request, 'smart/login.html')
+    return render(request, 'smart/../users/templates/users/login.html')
 
 
 @login_required
 def home(request):
-    localizations = {}
+    locations = {}
 
     for channel in request.user.group.permissions.all():
-        if channel.device.localization in localizations:
-            localizations[channel.device.localization].append(channel)
+        if channel.device.location in locations:
+            locations[channel.device.location].append(channel)
         else:
-            localizations[channel.device.localization]=[]
-            localizations[channel.device.localization].append(channel)
+            locations[channel.device.location]=[]
+            locations[channel.device.location].append(channel)
 
     context={
-        # 'channels':request.user.profile_set.first().group.permissions.all(),
-        'localizations': localizations
+        'locations': locations
     }
     return render(request, 'smart/home.html', context)
 
 
 @login_required
 def locations(request):
-    localizations = {}
+    locations = {}
 
     for channel in request.user.group.permissions.all():
-        if channel.device.localization in localizations:
-            loc = localizations[channel.device.localization]
+        if channel.device.location in locations:
+            loc = locations[channel.device.location]
             if not channel.device.name in loc:
                 loc.append(channel.device.name)
-            localizations[channel.device.localization] = loc
+            locations[channel.device.location] = loc
         else:
             loc = [channel.device.name]
-            localizations[channel.device.localization] = loc
+            locations[channel.device.location] = loc
 
     context = {
-        # 'channels':request.user.profile_set.first().group.permissions.all(),
-        'localizations': localizations
+        'locations': locations
     }
     return render(request, 'smart/locations.html', context)
 
 
+@login_required
+def devices(request):
+    devices = []
+
+    for channel in request.user.group.permissions.all():
+        if channel.device not in devices:
+            devices.append(channel.device)
+
+    context = {
+        'devices': devices
+    }
+    return render(request, 'smart/devices.html', context)
+
+
+@login_required
+def device(request):
+    deviceId = request.GET.get('device')
+    print(deviceId)
+    channels = []
+    for channel in request.user.group.permissions.all():
+        if channel.device.id == int(deviceId):
+            channels.append(channel)
+            print('added ' + str(channel) + 'channel to channels')
+    context = {
+        'channels': channels
+    }
+    return render(request, 'smart/device.html', context)
