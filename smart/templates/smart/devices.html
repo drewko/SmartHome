@@ -1,0 +1,7 @@
+{% extends "smart/base.html" %}
+
+{% block content %}
+    {% for device in devices %}
+        <a  href="{%  url 'smart-device' %}?device={{ device.id  }}">{{ device }}</a><br>
+    {% endfor %}
+{% endblock content %}

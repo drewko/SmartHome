@@ -2,8 +2,9 @@ from django.shortcuts import render
 # from django.http import HttpResponse
 # from .models import Profile
 from django.contrib.auth.decorators import login_required
-# Create your views here.
 
+
+# Create your views here.
 
 
 def profile(request):
@@ -12,20 +13,47 @@ def profile(request):
 
 @login_required
 def home(request):
-    localizations={}
-
-
+    locations = {}
     for channel in request.user.group.permissions.all():
-        if channel.device.localization in localizations:
-            localizations[channel.device.localization].append(channel)
+        if channel.device.location in locations:
+            locations[channel.device.location].append(channel)
         else:
-            localizations[channel.device.localization]=[]
-            localizations[channel.device.localization].append(channel)
+            locations[channel.device.location] = []
+            locations[channel.device.location].append(channel)
 
-    context={
+    context = {
         # 'channels':request.user.profile_set.first().group.permissions.all(),
-        'localizations':localizations
+        'locations': locations
     }
     return render(request, 'smart/home.html', context)
 
 
+@login_required
+def devices(request):
+    devices = []
+
+    for channel in request.user.group.permissions.all():
+        if channel.device not in devices:
+            devices.append(channel.device)
+
+    context = {
+        # 'channels':request.user.profile_set.first().group.permissions.all(),
+        'devices': devices
+    }
+    return render(request, 'smart/devices.html', context)
+
+
+@login_required
+def device(request):
+    deviceId = request.GET.get('device')
+    print(deviceId)
+    channels = []
+    for channel in request.user.group.permissions.all():
+        if channel.device.id == int(deviceId):
+            channels.append(channel)
+            print('added ' + str(channel) + 'channel to channels')
+    context = {
+        # 'channels':request.user.profile_set.first().group.permissions.all(),
+        'channels': channels
+    }
+    return render(request, 'smart/device.html', context)

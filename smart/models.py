@@ -3,14 +3,14 @@ from django.db import models
 from enum import Enum
 from django.conf import settings
 
-class Localization(models.Model):
+class Location(models.Model):
     name = models.CharField(max_length=256)
     def __str__(self):
         return self.name
 
 class Device(models.Model):
     name = models.CharField(max_length=256, unique=True)
-    localization = models.ForeignKey(Localization, on_delete=models.DO_NOTHING)
+    location = models.ForeignKey(Location, on_delete=models.DO_NOTHING)
     status = models.CharField(max_length=10)
 
     def __str__(self):
