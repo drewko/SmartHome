@@ -1,32 +1,69 @@
 {% extends "smart/base.html" %}
 
 {% block content %}
-    Home
-    {% for location,val in locations.items %}
-                {% for channel in val %}
-        <article class="media content-section">
-              <div class="media-body">
-                <div class="article-metadata">
-                  <a class="mr-2" href="#">{{ channel.device }}</a>
-                  <small class="text-muted">{{ channel.type }}</small>
-                </div>
-                    <h2><a class="article-title"  href="#">{{ channel.name }}</a></h2>
-                    <p class="article-content">{{ location.name }}</p>
+{#<<<<<<< HEAD#}
+{#    Home#}
+{#    {% for location,val in locations.items %}#}
+{#                {% for channel in val %}#}
+{#        <article class="media content-section">#}
+{#              <div class="media-body">#}
+{#                <div class="article-metadata">#}
+{#                  <a class="mr-2" href="#">{{ channel.device }}</a>#}
+{#                  <small class="text-muted">{{ channel.type }}</small>#}
+{#                </div>#}
+{#                    <h2><a class="article-title"  href="#">{{ channel.name }}</a></h2>#}
+{#                    <p class="article-content">{{ location.name }}</p>#}
+{##}
+{#                  {% if channel.type == 'InputOutput' %}#}
+{#                    <div class="custom-control custom-switch">#}
+{#                      <input type="checkbox" class="custom-control-input"   >#}
+{#                      <label class="custom-control-label" for="{{ channel.device.name }}_{{ channel.name }}"></label>#}
+{#                    </div>#}
+{#                  {% elif channel.type == 'Input' %}#}
+{#                      <div id="{{ channel.device.name }}_{{ channel.name }}"></div>#}
+{#                  {% endif %}#}
+{##}
+{#              </div>#}
+{#        </article>#}
+{#        {{ channel }}<br>#}
+{#                {% endfor %}#}
+{#    {% endfor %}#}
+{#{% endblock content %}#}
+{##}
+{##}
+{#=======#}
 
-                  {% if channel.type == 'InputOutput' %}
+
+<div class="row">
+{% for location,val in locations.items %}
+                    {% for channel in val %}
+     <div id ="rcorners2" class="card rounded col-md-3">
+        <div class="row no-gutters">
+            <div class="col-auto">
+                <img src="https://image.flaticon.com/icons/svg/1654/1654007.svg" class="img-fluid" width="100px" alt="">
+            </div>
+            <div class="col">
+                <div class="card-block px-2 ">
+                    <h4 class="card-title text-center">{{ channel.name }}</h4>
+                    <p class="card-text text-center">{{ location.name }}</p>
+{#                    <a href="#" class="btn btn-primary">BUTTON</a>#}
+                    {% if channel.type == 'InputOutput' %}
                     <div class="custom-control custom-switch">
-                      <input type="checkbox" class="custom-control-input" id="{{ channel.device.name }}_{{ channel.name }}" onclick="setvalue('{{ channel.device.name }}','{{ channel.name }}',this)" >
-                      <label class="custom-control-label" for="{{ channel.device.name }}_{{ channel.name }}"></label>
+                      <input type="checkbox" class="custom-control-input" id="{{ channel.device.name }}_{{ channel.name }}" onclick="setvalue('{{ channel.device.name }}','{{ channel.name }}',this)">
+                      <label class="custom-control-label button" for="{{ channel.device.name }}_{{ channel.name }}" ></label>
+{#                        <button type="button" class="btn btn-block btn-outline-dark">Off</button>#}
                     </div>
-                  {% elif channel.type == 'Input' %}
-                      <div id="{{ channel.device.name }}_{{ channel.name }}"></div>
-                  {% endif %}
-
-              </div>
-        </article>
-        {{ channel }}<br>
+                        {% else %}
+                    <p class="card-text text-center" id="{{ channel.device.name }}_{{ channel.name }}"></p>
+                        {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
                 {% endfor %}
     {% endfor %}
+</div>
+
 {% endblock content %}
 
 {% block script %}
@@ -45,3 +82,4 @@
     {% endfor %}
     </script>
 {% endblock %}
+{#>>>>>>> e7535a8598e4e2fd97351d5e4d3fa613e1fc1236#}

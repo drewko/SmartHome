@@ -1,26 +1,39 @@
-
 {% extends "smart/base.html" %}
 
 {% block content %}
-    <div class="panel-group" id="accordion">
-    {% for device,channels in devices.items %}
-        <div class="panel panel-default">
-          <div class="panel-heading">
-            <h4 class="panel-title">
-                <a data-toggle="collapse" data-parent="#accordion" href="#{{ device }}">{{ device }}</a>
-            </h4>
-          </div>
+<div class="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
+{% for device, channels in devices.items %}
 
-            <div id="{{ device }}" class="panel-collapse collapse in">
-                <ul class="list-group">
-                  {% for channel in channels %}
-                    <li class="list-group-item">{{ channel.name }}</li>
-                {% endfor %}
-              </ul>
-        </div>
+  <!-- Accordion card -->
+  <div class="card">
 
-
-    {% endfor %}
-        </div>
+        <!-- Card header -->
+    <div class="card-header" role="tab" id="headingTwo1">
+          <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#{{ device }}"
+            aria-expanded="false" aria-controls="collapseTwo1">
+            <h5 class="mb-0">
+              {{ device }}<i class="fas fa-angle-down rotate-icon"></i>
+            </h5>
+          </a>
     </div>
+
+        <!-- Card body -->
+    <div id="{{ device }}" class="collapse" role="tabpanel" aria-labelledby="headingTwo1"
+          data-parent="#{{ device }}">
+      <div class="card-body">
+
+        <ul class="list-group">
+              {% for channel in channels %}
+                <li class="list-group-item">{{ channel }}</li>
+              {% endfor %}
+        </ul>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+{% endfor %}
 {% endblock content %}
+
