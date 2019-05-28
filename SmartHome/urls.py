@@ -11,4 +11,4 @@ urlpatterns = [
     path('', include('users.urls')),
 ]
 
-# mqtt.client.loop_start()
+mqtt.client.loop_start()

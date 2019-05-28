@@ -1,7 +1,10 @@
+import json
+from django.http import HttpResponse
 from django.shortcuts import render
-# from django.http import HttpResponse
-# from .models import Profile
 from django.contrib.auth.decorators import login_required
+from SmartHome import mqtt
+
+from smart.models import Channel
 
 
 def profile(request):
@@ -58,14 +61,11 @@ def devices(request):
     devices = {}
 
     for channel in request.user.group.permissions.all():
-        if channel.device.name in devices:
-            loc = devices[channel.device.name]
-            # if not channel.name in loc:
-            loc.append(channel.name)
-            devices[channel.device.name] = loc
+        if channel.device not in devices:
+            devices[channel.device.name]=[]
+            devices[channel.device.name].append(channel.name)
         else:
-            loc = [channel.name]
-            devices[channel.device.name] = loc
+            devices[channel.device.name].append(channel.name)
 
     # print(devices)
     context = {
@@ -86,4 +86,56 @@ def device(request):
     context = {
         'channels': channels
     }
-    return render(request, 'smart/device.html', context)
+    return render(request, 'smart/device.html', context)\
+
+@login_required
+def get_io_value(request):
+    response = HttpResponse(content_type="text/plain")
+    if request.method == 'POST':
+        body = json.loads(request.body)
+        target = Channel.objects.get(name=body['channel'], device__name=body['device'])
+        if request.user.is_authenticated and target in request.user.group.permissions.all():
+            status = Channel.objects.get(name=body['channel'], device__name=body['device']).status
+            response.content = status
+            response.status_code = 200
+        else:
+            response.status_code = 403
+        return response
+    else:
+        response.status_code = 503
+        return response
+
+@login_required
+def get_i_value(request):
+    response = HttpResponse(content_type="text/plain")
+    if request.method == 'POST':
+        body = json.loads(request.body)
+        target = Channel.objects.get(name=body['channel'], device__name=body['device'])
+        if request.user.is_authenticated and target in request.user.group.permissions.all() and target.type == 'Input':
+            mqtt.client.publish('/' + body['device'] + '/' + body['channel'], 'status')
+            status = Channel.objects.get(name=body['channel'], device__name=body['device']).status
+            response.content = status
+            response.status_code = 200
+        else:
+            response.status_code = 403
+        return response
+    else:
+        response.status_code = 503
+        return response
+
+@login_required
+def setvalue(request):
+    response = HttpResponse(content_type="text/plain")
+    if request.method == 'POST':
+        body = json.loads(request.body)
+        target = Channel.objects.get(name=body['channel'], device__name=body['device'])
+        if request.user.is_authenticated and target in request.user.group.permissions.all():
+            mqtt.client.publish('/'+body['device']+'/'+body['channel'], body['value'])
+            response.status_code = 200
+        else:
+            response.status_code = 403
+        return response
+    else:
+        response.status_code = 503
+        return response
+

@@ -23,7 +23,6 @@ class Device(models.Model):
 class ChannelType(Enum):
     Input = 'input'
     InputOutput = 'input/output'
-    Output = 'output'
 
 
 class Channel(models.Model):
