@@ -13,7 +13,7 @@ def profile(request):
 @login_required
 def home(request):
 
-    if request.user.is_staff:
+    # if request.user.is_staff:
         locations = {}
 
         for channel in request.user.group.permissions.all():
@@ -27,32 +27,46 @@ def home(request):
             'locations': locations
         }
         return render(request, 'smart/home.html', context)
-    else:
-        message = {}
-        message["error"] = "Nie masz uprawnien do żadnej grupy."
-        context = {
-            'message': message
-        }
-        return render(request, 'smart/fail.html', context)
+    # else:
+    #     message = {}
+    #     message["error"] = "Nie masz uprawnien do żadnej grupy."
+    #     context = {
+    #         'message': message
+    #     }
+    #     return render(request, 'smart/fail.html', context)
 
 
 @login_required
 def locations(request):
+    # locations = {}
+    #
+    # for channel in request.user.group.permissions.all():
+    #     if channel.device.location in locations:
+    #         loc = locations[channel.device.location]
+    #         if not channel.device.name in loc:
+    #             loc.append(channel.device.name)
+    #         locations[channel.device.location] = loc
+    #     else:
+    #         loc = [channel.device.name]
+    #         locations[channel.device.location] = loc
+    #
+    # context = {
+    #     'locations': locations
+    # }
+
     locations = {}
 
     for channel in request.user.group.permissions.all():
         if channel.device.location in locations:
-            loc = locations[channel.device.location]
-            if not channel.device.name in loc:
-                loc.append(channel.device.name)
-            locations[channel.device.location] = loc
+            locations[channel.device.location].append(channel)
         else:
-            loc = [channel.device.name]
-            locations[channel.device.location] = loc
+            locations[channel.device.location] = []
+            locations[channel.device.location].append(channel)
 
     context = {
         'locations': locations
     }
+    # return render(request, 'smart/home.html', context)
     return render(request, 'smart/locations.html', context)
 
 
@@ -62,10 +76,10 @@ def devices(request):
 
     for channel in request.user.group.permissions.all():
         if channel.device not in devices:
-            devices[channel.device.name]=[]
-            devices[channel.device.name].append(channel.name)
+            devices[channel.device] = []
+            devices[channel.device].append(channel)
         else:
-            devices[channel.device.name].append(channel.name)
+            devices[channel.device].append(channel)
 
     # print(devices)
     context = {

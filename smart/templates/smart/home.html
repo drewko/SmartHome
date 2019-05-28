@@ -1,35 +1,50 @@
 {% extends "smart/base.html" %}
 
 {% block content %}
-<div class="row">
+{#<div class="container-fluid">#}
 {% for location,val in locations.items %}
-                    {% for channel in val %}
-     <div id ="rcorners2" class="card rounded col-md-3">
-        <div class="row no-gutters">
-            <div class="col-auto">
-                <img src="https://image.flaticon.com/icons/svg/1654/1654007.svg" class="img-fluid" width="100px" alt="">
-            </div>
-            <div class="col">
-                <div class="card-block px-2 ">
-                    <h4 class="card-title text-center">{{ channel.name }}</h4>
-                    <p class="card-text text-center">{{ location.name }}</p>
-{#                    <a href="#" class="btn btn-primary">BUTTON</a>#}
-                    {% if channel.type == 'InputOutput' %}
-                    <div class="custom-control custom-switch">
-                      <input type="checkbox" class="custom-control-input" id="{{ channel.device.name }}_{{ channel.name }}" onclick="setvalue('{{ channel.device.name }}','{{ channel.name }}',this)">
-                      <label class="custom-control-label button" for="{{ channel.device.name }}_{{ channel.name }}" ></label>
-{#                        <button type="button" class="btn btn-block btn-outline-dark">Off</button>#}
-                    </div>
-                        {% else %}
-                    <p class="card-text text-center" id="{{ channel.device.name }}_{{ channel.name }}"></p>
-                        {% endif %}
-                </div>
-            </div>
-        </div>
+
+{#     Wypierdala#}
+    <div class="location" >
+            {{ location.name }}
     </div>
+
+    <div class="container">
+        <div class="row">
+                    {% for channel in val %}
+
+             <div id ="rcorners2" class="card rounded col-md-4 col-lg-3">
+                    <div class="row no-gutters">
+                        <div class="col-auto" >
+                            <img src="https://image.flaticon.com/icons/svg/1654/1654007.svg" class="img-responsive" style="max-width: 100px" alt="">
+                        </div>
+                            <div class="col">
+                                <div class="card-block">
+                                    <h4 class="card-title text-center">{{ channel.name }}</h4>
+{#                                    <p class="card-text text-center">{{ location.name }}</p>#}
+                {#                    <a href="#" class="btn btn-primary">BUTTON</a>#}
+{#                                <input type="checkbox" checked data-toggle="toggle" data-size="lg">#}
+                                    {% if channel.type == 'InputOutput' %}
+                                  <div class="custom-control custom-switch text-center">
+{#                                <input type="checkbox" class="custom-control-input" data-toggle="toggle" data-size="lg" id="{{ channel.device.name }}_{{ channel.name }}" onclick="setvalue('{{ channel.device.name }}','{{ channel.name }}',this)">#}
+                                      <input type="checkbox" class="custom-control-input"  id="{{ channel.device.name }}_{{ channel.name }}" onclick="setvalue('{{ channel.device.name }}','{{ channel.name }}',this)">
+                                      <label class="custom-control-label button" for="{{ channel.device.name }}_{{ channel.name }}" ></label>
+{#                                        <button type="button" class="btn btn-block btn-outline-dark">Off</button>#}
+                                    </div>
+                                        {% else %}
+                                    <p class="card-text text-center" id="{{ channel.device.name }}_{{ channel.name }}"></p>
+                                        {% endif %}
+                                </div>
+                            </div>
+                    </div>
+             </div>
+
                 {% endfor %}
+        </div>
+    <br><br>
+    </div>
     {% endfor %}
-</div>
+{#</div>#}
 
 {% endblock content %}
 
