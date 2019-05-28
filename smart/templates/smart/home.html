@@ -1,39 +1,6 @@
 {% extends "smart/base.html" %}
 
 {% block content %}
-{#<<<<<<< HEAD#}
-{#    Home#}
-{#    {% for location,val in locations.items %}#}
-{#                {% for channel in val %}#}
-{#        <article class="media content-section">#}
-{#              <div class="media-body">#}
-{#                <div class="article-metadata">#}
-{#                  <a class="mr-2" href="#">{{ channel.device }}</a>#}
-{#                  <small class="text-muted">{{ channel.type }}</small>#}
-{#                </div>#}
-{#                    <h2><a class="article-title"  href="#">{{ channel.name }}</a></h2>#}
-{#                    <p class="article-content">{{ location.name }}</p>#}
-{##}
-{#                  {% if channel.type == 'InputOutput' %}#}
-{#                    <div class="custom-control custom-switch">#}
-{#                      <input type="checkbox" class="custom-control-input"   >#}
-{#                      <label class="custom-control-label" for="{{ channel.device.name }}_{{ channel.name }}"></label>#}
-{#                    </div>#}
-{#                  {% elif channel.type == 'Input' %}#}
-{#                      <div id="{{ channel.device.name }}_{{ channel.name }}"></div>#}
-{#                  {% endif %}#}
-{##}
-{#              </div>#}
-{#        </article>#}
-{#        {{ channel }}<br>#}
-{#                {% endfor %}#}
-{#    {% endfor %}#}
-{#{% endblock content %}#}
-{##}
-{##}
-{#=======#}
-
-
 <div class="row">
 {% for location,val in locations.items %}
                     {% for channel in val %}
@@ -82,4 +49,3 @@
     {% endfor %}
     </script>
 {% endblock %}
-{#>>>>>>> e7535a8598e4e2fd97351d5e4d3fa613e1fc1236#}
