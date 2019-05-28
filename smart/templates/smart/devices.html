@@ -2,7 +2,25 @@
 {% extends "smart/base.html" %}
 
 {% block content %}
-    {% for device in devices %}
-        <a  href="{%  url 'smart-device' %}?device={{ device.id  }}">{{ device }}</a><br>
+    <div class="panel-group" id="accordion">
+    {% for device,channels in devices.items %}
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h4 class="panel-title">
+                <a data-toggle="collapse" data-parent="#accordion" href="#{{ device }}">{{ device }}</a>
+            </h4>
+          </div>
+
+            <div id="{{ device }}" class="panel-collapse collapse in">
+                <ul class="list-group">
+                  {% for channel in channels %}
+                    <li class="list-group-item">{{ channel.name }}</li>
+                {% endfor %}
+              </ul>
+        </div>
+
+
     {% endfor %}
+        </div>
+    </div>
 {% endblock content %}

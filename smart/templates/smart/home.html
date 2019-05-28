@@ -12,12 +12,14 @@
                 </div>
                     <h2><a class="article-title"  href="#">{{ channel.name }}</a></h2>
                     <p class="article-content">{{ location.name }}</p>
-                    <button type="button" class="btn btn-block btn-outline-dark">Dark</button>
+
                   {% if channel.type == 'InputOutput' %}
                     <div class="custom-control custom-switch">
-                      <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
-                      <label class="custom-control-label" for="customSwitch1"></label>
+                      <input type="checkbox" class="custom-control-input" id="{{ channel.device.name }}_{{ channel.name }}" onclick="setvalue('{{ channel.device.name }}','{{ channel.name }}',this)" >
+                      <label class="custom-control-label" for="{{ channel.device.name }}_{{ channel.name }}"></label>
                     </div>
+                  {% elif channel.type == 'Input' %}
+                      <div id="{{ channel.device.name }}_{{ channel.name }}"></div>
                   {% endif %}
 
               </div>
@@ -26,3 +28,20 @@
                 {% endfor %}
     {% endfor %}
 {% endblock content %}
+
+{% block script %}
+    {% include 'smart/script.html' %}
+    <script>
+    {% for location,channels in locations.items %}
+        {% for channel in channels %}
+            {% if channel.type == 'InputOutput' %}
+    getIOvalue('{{ channel.device.name }}','{{ channel.name }}');
+    setInterval(function() { getIOvalue('{{ channel.device.name }}','{{ channel.name }}'); },500);
+            {% elif channel.type == 'Input' %}
+    getIvalue('{{ channel.device.name }}','{{ channel.name }}');
+    setInterval(function() { getIvalue('{{ channel.device.name }}','{{ channel.name }}'); },2000);
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+    </script>
+{% endblock %}
