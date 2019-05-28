@@ -2,7 +2,6 @@ from django.shortcuts import render
 # from django.http import HttpResponse
 # from .models import Profile
 from django.contrib.auth.decorators import login_required
-# Create your views here.
 
 
 def profile(request):
