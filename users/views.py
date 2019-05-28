@@ -10,8 +10,9 @@ def register(request):
         if form.is_valid():
             form.save()
             # username = form.cleaned_data.get('username')
+            # raw_password = form.cleaned_data.get('password1')
             # messages.success(request, f'Account created for {username}!')
             return redirect('smart-home')
     else:
         form = UserRegisterForm()
-    return render(request, 'smart/templates/users/register.html', {'form': form})
+    return render(request, 'users/register2.html', {'form': form})

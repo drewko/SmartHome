@@ -6,24 +6,32 @@ from django.contrib.auth.decorators import login_required
 
 
 def profile(request):
-    return render(request, 'smart/../users/templates/users/login.html')
-
+    return render(request, 'users/login2.html')
 
 @login_required
 def home(request):
-    locations = {}
 
-    for channel in request.user.group.permissions.all():
-        if channel.device.location in locations:
-            locations[channel.device.location].append(channel)
-        else:
-            locations[channel.device.location]=[]
-            locations[channel.device.location].append(channel)
+    if request.user.is_staff:
+        locations = {}
 
-    context={
-        'locations': locations
-    }
-    return render(request, 'smart/home.html', context)
+        for channel in request.user.group.permissions.all():
+            if channel.device.location in locations:
+                locations[channel.device.location].append(channel)
+            else:
+                locations[channel.device.location]=[]
+                locations[channel.device.location].append(channel)
+
+        context={
+            'locations': locations
+        }
+        return render(request, 'smart/home.html', context)
+    else:
+        message = {}
+        message["error"] = "Nie masz uprawnien do żadnej grupy."
+        context = {
+            'message': message
+        }
+        return render(request, 'smart/fail.html', context)
 
 
 @login_required
@@ -48,12 +56,19 @@ def locations(request):
 
 @login_required
 def devices(request):
-    devices = []
+    devices = {}
 
     for channel in request.user.group.permissions.all():
-        if channel.device not in devices:
-            devices.append(channel.device)
+        if channel.device.name in devices:
+            loc = devices[channel.device.name]
+            # if not channel.name in loc:
+            loc.append(channel.name)
+            devices[channel.device.name] = loc
+        else:
+            loc = [channel.name]
+            devices[channel.device.name] = loc
 
+    # print(devices)
     context = {
         'devices': devices
     }

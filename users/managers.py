@@ -1,6 +1,6 @@
 from django.contrib.auth.base_user import BaseUserManager
 from django.utils.translation import ugettext_lazy as _
-
+from smart.models import Group
 
 class CustomUserManager(BaseUserManager):
     """
@@ -15,6 +15,8 @@ class CustomUserManager(BaseUserManager):
             raise ValueError(_('The Email must be set'))
         # email = self.normalize_email(email)
         user = self.model(username=username, **extra_fields)
+
+        extra_fields.setdefault('group', None)
         user.set_password(password)
         user.save()
         return user
@@ -26,6 +28,7 @@ class CustomUserManager(BaseUserManager):
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_active', True)
+
 
         if extra_fields.get('is_staff') is not True:
             raise ValueError(_('Superuser must have is_staff=True.'))
