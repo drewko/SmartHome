@@ -1,0 +1,37 @@
+<script>
+    function getIOvalue(device,channel) {
+        const Http = new XMLHttpRequest();
+        const url='/getiovalue/';
+        Http.open("POST", url);
+        Http.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+        Http.send('{"device":"'+ device  + '", "channel":"'+ channel + '" }');
+        Http.onreadystatechange=(e)=>{
+            console.log(Http.responseText)
+            if( Http.responseText == 'on'){
+                document.getElementById(device + '_' + channel).checked = true;
+            }
+            else if (Http.responseText == 'off'){
+                document.getElementById(device + '_' + channel).checked = false;
+            }
+        }
+    }
+    function setvalue(device,channel,checkbox) {
+        const Http = new XMLHttpRequest();
+        const url='/setvalue/';
+        Http.open("POST", url);
+        Http.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+        Http.send('{"device":"'+ device  + '", "channel":"'+ channel + '", "value":"'+ ((checkbox.checked == true) ? 'on':'off') + '" }');
+        Http.onreadystatechange=(e)=>{}
+        }
+    function getIvalue(device,channel) {
+        const Http = new XMLHttpRequest();
+        const url='/getivalue/';
+        Http.open("POST", url);
+        Http.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
+        Http.send('{"device":"'+ device  + '", "channel":"'+ channel + '" }');
+        Http.onreadystatechange=(e)=>{
+            console.log(Http.responseText)
+            document.getElementById(device + '_' + channel).innerText=Http.responseText;
+        }
+    }
+</script>

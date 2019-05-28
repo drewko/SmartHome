@@ -1,6 +1,37 @@
 {% extends "smart/base.html" %}
 
 {% block content %}
+{#<<<<<<< HEAD#}
+{#    Home#}
+{#    {% for location,val in locations.items %}#}
+{#                {% for channel in val %}#}
+{#        <article class="media content-section">#}
+{#              <div class="media-body">#}
+{#                <div class="article-metadata">#}
+{#                  <a class="mr-2" href="#">{{ channel.device }}</a>#}
+{#                  <small class="text-muted">{{ channel.type }}</small>#}
+{#                </div>#}
+{#                    <h2><a class="article-title"  href="#">{{ channel.name }}</a></h2>#}
+{#                    <p class="article-content">{{ location.name }}</p>#}
+{##}
+{#                  {% if channel.type == 'InputOutput' %}#}
+{#                    <div class="custom-control custom-switch">#}
+{#                      <input type="checkbox" class="custom-control-input"   >#}
+{#                      <label class="custom-control-label" for="{{ channel.device.name }}_{{ channel.name }}"></label>#}
+{#                    </div>#}
+{#                  {% elif channel.type == 'Input' %}#}
+{#                      <div id="{{ channel.device.name }}_{{ channel.name }}"></div>#}
+{#                  {% endif %}#}
+{##}
+{#              </div>#}
+{#        </article>#}
+{#        {{ channel }}<br>#}
+{#                {% endfor %}#}
+{#    {% endfor %}#}
+{#{% endblock content %}#}
+{##}
+{##}
+{#=======#}
 
 
 <div class="row">
@@ -18,12 +49,12 @@
 {#                    <a href="#" class="btn btn-primary">BUTTON</a>#}
                     {% if channel.type == 'InputOutput' %}
                     <div class="custom-control custom-switch">
-                      <input type="checkbox" class="custom-control-input" id="customSwitch1" checked>
-{#                      <label class="custom-control-label button" for="customSwitch1"></label>#}
-                        <button type="button" class="btn btn-block btn-outline-dark">Off</button>
+                      <input type="checkbox" class="custom-control-input" id="{{ channel.device.name }}_{{ channel.name }}" onclick="setvalue('{{ channel.device.name }}','{{ channel.name }}',this)">
+                      <label class="custom-control-label button" for="{{ channel.device.name }}_{{ channel.name }}" ></label>
+{#                        <button type="button" class="btn btn-block btn-outline-dark">Off</button>#}
                     </div>
                         {% else %}
-                    <p class="card-text text-center">{{ channel.status }}</p>
+                    <p class="card-text text-center" id="{{ channel.device.name }}_{{ channel.name }}"></p>
                         {% endif %}
                 </div>
             </div>
@@ -34,3 +65,21 @@
 </div>
 
 {% endblock content %}
+
+{% block script %}
+    {% include 'smart/script.html' %}
+    <script>
+    {% for location,channels in locations.items %}
+        {% for channel in channels %}
+            {% if channel.type == 'InputOutput' %}
+    getIOvalue('{{ channel.device.name }}','{{ channel.name }}');
+    setInterval(function() { getIOvalue('{{ channel.device.name }}','{{ channel.name }}'); },500);
+            {% elif channel.type == 'Input' %}
+    getIvalue('{{ channel.device.name }}','{{ channel.name }}');
+    setInterval(function() { getIvalue('{{ channel.device.name }}','{{ channel.name }}'); },2000);
+            {% endif %}
+        {% endfor %}
+    {% endfor %}
+    </script>
+{% endblock %}
+{#>>>>>>> e7535a8598e4e2fd97351d5e4d3fa613e1fc1236#}
