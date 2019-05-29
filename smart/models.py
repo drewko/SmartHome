@@ -27,12 +27,16 @@ class ChannelType(Enum):
 
 class Channel(models.Model):
     device = models.ForeignKey(Device, on_delete=models.CASCADE)
-    name = models.CharField(max_length=256, unique=True)
+    name = models.CharField(max_length=256, unique=False)
     type = models.CharField(max_length=20, choices=[(tag.name, tag.value) for tag in ChannelType])
     status = models.CharField(max_length=100)
+    image = models.URLField(max_length=1024, default='')
 
     def __str__(self):
         return f'{self.device} -> {self.name} {self.type}'
+
+    class Meta:
+        unique_together = ('name', 'device')
 
 
 class Group(models.Model):
@@ -41,3 +45,4 @@ class Group(models.Model):
 
     def __str__(self):
         return f'{self.name}'
+

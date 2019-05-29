@@ -38,24 +38,8 @@ def home(request):
 
 @login_required
 def locations(request):
-    # locations = {}
-    #
-    # for channel in request.user.group.permissions.all():
-    #     if channel.device.location in locations:
-    #         loc = locations[channel.device.location]
-    #         if not channel.device.name in loc:
-    #             loc.append(channel.device.name)
-    #         locations[channel.device.location] = loc
-    #     else:
-    #         loc = [channel.device.name]
-    #         locations[channel.device.location] = loc
-    #
-    # context = {
-    #     'locations': locations
-    # }
 
     locations = {}
-
     for channel in request.user.group.permissions.all():
         if channel.device.location in locations:
             locations[channel.device.location].append(channel)
@@ -88,19 +72,19 @@ def devices(request):
     return render(request, 'smart/devices.html', context)
 
 
-@login_required
-def device(request):
-    deviceId = request.GET.get('device')
-    print(deviceId)
-    channels = []
-    for channel in request.user.group.permissions.all():
-        if channel.device.id == int(deviceId):
-            channels.append(channel)
-            print('added ' + str(channel) + 'channel to channels')
-    context = {
-        'channels': channels
-    }
-    return render(request, 'smart/device.html', context)\
+# @login_required
+# def device(request):
+#     deviceId = request.GET.get('device')
+#     print(deviceId)
+#     channels = []
+#     for channel in request.user.group.permissions.all():
+#         if channel.device.id == int(deviceId):
+#             channels.append(channel)
+#             print('added ' + str(channel) + 'channel to channels')
+#     context = {
+#         'channels': channels
+#     }
+#     return render(request, 'smart/device.html', context)\
 
 @login_required
 def get_io_value(request):
