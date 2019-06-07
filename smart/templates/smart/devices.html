@@ -1,70 +1,48 @@
 {% extends "smart/base.html" %}
-
-{#{% block content %}#}
-{#<div class="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">#}
-{#{% for device, channels in devices.items %}#}
-{##}
-{#  <!-- Accordion card -->#}
-{#  <div class="card">#}
-{##}
-{#        <!-- Card header -->#}
-{#    <div class="card-header" role="tab" id="headingTwo1">#}
-{#          <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#{{ device }}"#}
-{#            aria-expanded="false" aria-controls="collapseTwo1">#}
-{#            <h5 class="mb-0">#}
-{#              {{ device }}<i class="fas fa-angle-down rotate-icon"></i>#}
-{#            </h5>#}
-{#          </a>#}
-{#    </div>#}
-{##}
-{#        <!-- Card body -->#}
-{#    <div id="{{ device }}" class="collapse" role="tabpanel" aria-labelledby="headingTwo1"#}
-{#          data-parent="#{{ device }}">#}
-{#      <div class="card-body">#}
-{##}
-{#        <ul class="list-group">#}
-{#              {% for channel in channels %}#}
-{#                <li class="list-group-item">{{ channel }}</li>#}
-{#              {% endfor %}#}
-{#        </ul>#}
-{#      </div>#}
-{##}
-{#    </div>#}
-{#  </div>#}
-{#</div>#}
-{#{% endfor %}#}
-{#{% endblock content %}#}
-
 {% block content %}
-    <div class="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
+    <div class="container">
+    <div class="accordion md-accordion " id="accordionEx1" role="tablist" aria-multiselectable="true">
         {% for device,channels in devices.items %}
-            <div class="card-header" role="tab" id="headingTwo1">
-                <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#{{ device.name }}" aria-expanded="false" aria-controls="collapseTwo1">
+            <div class="card-header " role="tab" id="headingTwo1">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#{{ device.name }}"
+                   aria-expanded="false" aria-controls="collapseTwo1">
                     <h5 class="mb-0">
                         {{ device.name }}<i class="fas fa-angle-down rotate-icon"></i>
                     </h5>
                 </a>
             </div>
-            <div id="{{ device.name }}" class="collapse" role="tabpanel" aria-labelledby="headingTwo1" data-parent="#{{ device.name }}">
+            <div id="{{ device.name }}" class="collapse" role="tabpanel" aria-labelledby="headingTwo1"
+                 data-parent="#{{ device.name }}">
                 <div class="card-body">
                     <div class="row">
                         {% for channel in channels %}
-                            <div id ="rcorners2" class="card rounded col-md-4 col-lg-3">
+                            <div id="rcorners2" class="card rounded col-md-4 col-lg-4">
                                 <div class="row no-gutters">
-                                    <div class="col-auto" >
-                                        <img src="https://image.flaticon.com/icons/svg/1654/1654007.svg" class="img-responsive" style="max-width: 100px" alt="">
+                                    <div class="col-auto">
+                                        <img src="{{ channel.image }}"
+                                             class="img-responsive" style="max-width: 100px" alt="">
                                     </div>
                                     <div class="col">
-                                        <div class="card-block">
+                                        <div class="card-block text-center">
                                             <h4 class="card-title text-center">{{ channel.name }}</h4>
-                                                {% if channel.type == 'InputOutput' %}
-                                                            <div class="custom-control custom-switch text-center">
-                                                                <input type="checkbox" class="custom-control-input"  id="{{ channel.device.name }}_{{ channel.name }}" onclick="setvalue('{{ channel.device.name }}','{{ channel.name }}',this)">
-                                                                <label class="custom-control-label button" for="{{ channel.device.name }}_{{ channel.name }}" ></label>
-                                                            </div>
-                                                {% else %}
-                                                        <p class="card-text text-center" id="{{ channel.device.name }}_{{ channel.name }}"></p>
-                                                {% endif %}
+                                            {% if channel.type == 'InputOutput' %}
+{#                                                <div class="custom-control custom-switch text-center">#}
+{#                                                    <input type="checkbox" class="custom-control-input"#}
+{#                                                           id="{{ channel.device.name }}_{{ channel.name }}"#}
+{#                                                           onclick="setvalue('{{ channel.device.name }}','{{ channel.name }}',this)">#}
+{#                                                    <label class="custom-control-label button"#}
+{#                                                           for="{{ channel.device.name }}_{{ channel.name }}"></label>#}
+{#                                                </div>#}
+                                                <label class="switch ">
+                                                    <input type="checkbox"
+                                                           id="{{ channel.device.name }}_{{ channel.name }}"
+                                                           onclick="setvalue('{{ channel.device.name }}','{{ channel.name }}',this)">
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            {% else %}
+                                                <p class="card-text text-center"
+                                                   id="{{ channel.device.name }}_{{ channel.name }}"></p>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -72,25 +50,29 @@
                         {% endfor %}
                     </div>
                 </div>
-        </div>
+            </div>
         {% endfor %}
     </div>
-
+</div>
 {% endblock %}
 {% block script %}
     {% include 'smart/script.html' %}
     <script>
-    {% for location,channels in locations.items %}
-        {% for channel in channels %}
-            {% if channel.type == 'InputOutput' %}
-    getIOvalue('{{ channel.device.name }}','{{ channel.name }}');
-    setInterval(function() { getIOvalue('{{ channel.device.name }}','{{ channel.name }}'); },500);
-            {% elif channel.type == 'Input' %}
-    getIvalue('{{ channel.device.name }}','{{ channel.name }}');
-    setInterval(function() { getIvalue('{{ channel.device.name }}','{{ channel.name }}'); },2000);
-            {% endif %}
+        {% for location,channels in devices.items %}
+            {% for channel in channels %}
+                {% if channel.type == 'InputOutput' %}
+                    getIOvalue('{{ channel.device.name }}', '{{ channel.name }}');
+                    setInterval(function () {
+                        getIOvalue('{{ channel.device.name }}', '{{ channel.name }}');
+                    }, 500);
+                {% elif channel.type == 'Input' %}
+                    getIvalue('{{ channel.device.name }}', '{{ channel.name }}');
+                    setInterval(function () {
+                        getIvalue('{{ channel.device.name }}', '{{ channel.name }}');
+                    }, 2000);
+                {% endif %}
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
     </script>
 {% endblock %}
 

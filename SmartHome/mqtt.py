@@ -1,6 +1,6 @@
 import paho.mqtt.client as mqtt
-from smart.models import Device, Channel, ChannelType
-import time
+from smart.models import Device, Channel
+
 
 
 def on_connect(client, userdata, flags, rc):
@@ -28,10 +28,6 @@ def on_message(client, userdata, msg):
         client.publish('/'+device+'/'+channel,object.status)
 
 
-
-
-
-
 def on_disconnect(client, userdata, rc):
     client.loop_stop(force=True)
     if rc != 0:
@@ -40,15 +36,15 @@ def on_disconnect(client, userdata, rc):
         print("Disconnected")
 
 
-
 client = mqtt.Client()
 client.on_connect = on_connect
 client.on_message = on_message
 client.on_disconnect = on_disconnect
-client.connect("192.168.0.143", 1883, 60)
+client.connect("192.168.1.1", 1883, 60)
 
 for channel in Channel.objects.all():
     client.subscribe('/'+channel.device.name+'/'+channel.name+'/status')
+    print('Subscribed to: ' + '/'+channel.device.name+'/'+channel.name+'/status')
 
 
 

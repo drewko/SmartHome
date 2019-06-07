@@ -6,7 +6,7 @@
         Http.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
         Http.send('{"device":"'+ device  + '", "channel":"'+ channel + '" }');
         Http.onreadystatechange=(e)=>{
-            console.log(Http.responseText)
+            console.log(device+' ' + channel + ' '+Http.responseText)
             if( Http.responseText == 'on'){
                 document.getElementById(device + '_' + channel).checked = true;
             }
@@ -30,7 +30,7 @@
         Http.setRequestHeader("X-CSRFToken", '{{ csrf_token }}');
         Http.send('{"device":"'+ device  + '", "channel":"'+ channel + '" }');
         Http.onreadystatechange=(e)=>{
-            console.log(Http.responseText)
+            console.log(device+' ' + channel + ' '+Http.responseText)
             document.getElementById(device + '_' + channel).innerText=Http.responseText;
         }
     }

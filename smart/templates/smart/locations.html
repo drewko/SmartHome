@@ -1,44 +1,55 @@
 {% extends "smart/base.html" %}
 
 {% block content %}
-{##}
-<!--Accordion wrapper-->
-<div class="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
-    {% for location,val in locations.items %}
+    {##}
+    <!--Accordion wrapper-->
+    <div class="container">
+    <div class="accordion md-accordion" id="accordionEx1" role="tablist" aria-multiselectable="true">
+        {% for location,val in locations.items %}
 
-{#  <!-- Accordion card -->#}
-{#    <div class="card">#}
+            {#  <!-- Accordion card -->#}
+            {#    <div class="card">#}
 
-{#    <!-- Card header -->#}
+            {#    <!-- Card header -->#}
             <div class="card-header" role="tab" id="headingTwo1">
-                <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#{{ location.name }}" aria-expanded="false" aria-controls="collapseTwo1">
+                <a class="collapsed" data-toggle="collapse" data-parent="#accordionEx1" href="#{{ location.name }}"
+                   aria-expanded="false" aria-controls="collapseTwo1">
                     <h5 class="mb-0">
                         {{ location.name }}<i class="fas fa-angle-down rotate-icon"></i>
                     </h5>
                 </a>
             </div>
 
-{#    <!-- Card body -->#}
-        <div id="{{ location.name }}" class="collapse" role="tabpanel" aria-labelledby="headingTwo1" data-parent="#{{ location.name }}">
+            {#    <!-- Card body -->#}
+            <div id="{{ location.name }}" class="collapse" role="tabpanel" aria-labelledby="headingTwo1"
+                 data-parent="#{{ location.name }}">
                 <div class="card-body">
                     <div class="row">
                         {% for channel in val %}
-                            <div id ="rcorners2" class="card rounded col-md-4 col-lg-3">
-                                <div class="row no-gutters">
-                                    <div class="col-auto" >
-                                        <img src="https://image.flaticon.com/icons/svg/1654/1654007.svg" class="img-responsive" style="max-width: 100px" alt="">
+                            <div id="rcorners2" class="card rounded col-md-4 col-lg-4 ">
+                                <div class="row no-gutters ">
+                                    <div class="col-auto">
+                                        <img src="{{ channel.image }}"
+                                             class="img-responsive" style="max-width: 100px" alt="">
                                     </div>
-                                    <div class="col">
-                                        <div class="card-block">
+                                    <div class="col ">
+                                        <div class="card-block text-center">
                                             <h4 class="card-title text-center">{{ channel.name }}</h4>
-                                                {% if channel.type == 'InputOutput' %}
-                                                            <div class="custom-control custom-switch text-center">
-                                                                <input type="checkbox" class="custom-control-input"  id="{{ channel.device.name }}_{{ channel.name }}" onclick="setvalue('{{ channel.device.name }}','{{ channel.name }}',this)">
-                                                                <label class="custom-control-label button" for="{{ channel.device.name }}_{{ channel.name }}" ></label>
-                                                            </div>
-                                                {% else %}
-                                                        <p class="card-text text-center" id="{{ channel.device.name }}_{{ channel.name }}"></p>
-                                                {% endif %}
+                                            {% if channel.type == 'InputOutput' %}
+                                                {#                                                            <div class="custom-control custom-switch text-center">#}
+                                                {#                                                                <input type="checkbox" class="custom-control-input"  id="{{ channel.device.name }}_{{ channel.name }}" onclick="setvalue('{{ channel.device.name }}','{{ channel.name }}',this)">#}
+                                                {#                                                                <label class="custom-control-label button" for="{{ channel.device.name }}_{{ channel.name }}" ></label>#}
+                                                {#                                                            </div>#}
+                                                <label class="switch ">
+                                                    <input type="checkbox"
+                                                           id="{{ channel.device.name }}_{{ channel.name }}"
+                                                           onclick="setvalue('{{ channel.device.name }}','{{ channel.name }}',this)">
+                                                    <span class="slider round"></span>
+                                                </label>
+                                            {% else %}
+                                                <p class="card-text text-center"
+                                                   id="{{ channel.device.name }}_{{ channel.name }}"></p>
+                                            {% endif %}
                                         </div>
                                     </div>
                                 </div>
@@ -46,15 +57,16 @@
                         {% endfor %}
                     </div>
                 </div>
-        </div>
+            </div>
 
-{#    </div>#}
-{% endfor %}
+            {#    </div>#}
+        {% endfor %}
+    </div>
+    <!-- Accordion wrapper -->
+
+
 </div>
-<!-- Accordion wrapper -->
-
-
-
+    <div></div>
 {% endblock content %}
 
 
@@ -62,16 +74,20 @@
 {% block script %}
     {% include 'smart/script.html' %}
     <script>
-    {% for location,channels in locations.items %}
-        {% for channel in channels %}
-            {% if channel.type == 'InputOutput' %}
-    getIOvalue('{{ channel.device.name }}','{{ channel.name }}');
-    setInterval(function() { getIOvalue('{{ channel.device.name }}','{{ channel.name }}'); },500);
-            {% elif channel.type == 'Input' %}
-    getIvalue('{{ channel.device.name }}','{{ channel.name }}');
-    setInterval(function() { getIvalue('{{ channel.device.name }}','{{ channel.name }}'); },2000);
-            {% endif %}
+        {% for location,channels in locations.items %}
+            {% for channel in channels %}
+                {% if channel.type == 'InputOutput' %}
+                    getIOvalue('{{ channel.device.name }}', '{{ channel.name }}');
+                    setInterval(function () {
+                        getIOvalue('{{ channel.device.name }}', '{{ channel.name }}');
+                    }, 500);
+                {% elif channel.type == 'Input' %}
+                    getIvalue('{{ channel.device.name }}', '{{ channel.name }}');
+                    setInterval(function () {
+                        getIvalue('{{ channel.device.name }}', '{{ channel.name }}');
+                    }, 2000);
+                {% endif %}
+            {% endfor %}
         {% endfor %}
-    {% endfor %}
     </script>
 {% endblock %}
